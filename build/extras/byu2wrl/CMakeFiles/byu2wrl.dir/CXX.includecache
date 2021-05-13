@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/oxefit/GitRepos/rl/extras/byu2wrl/byu2wrl.cpp
+fstream
+-
+iostream
+-
+sstream
+-
+vector
+-
+Inventor/SoDB.h
+-
+Inventor/SoOutput.h
+-
+Inventor/actions/SoWriteAction.h
+-
+Inventor/VRMLnodes/SoVRMLAppearance.h
+-
+Inventor/VRMLnodes/SoVRMLCoordinate.h
+-
+Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h
+-
+Inventor/VRMLnodes/SoVRMLMaterial.h
+-
+Inventor/VRMLnodes/SoVRMLShape.h
+-
+Inventor/VRMLnodes/SoVRMLTransform.h
+-
+

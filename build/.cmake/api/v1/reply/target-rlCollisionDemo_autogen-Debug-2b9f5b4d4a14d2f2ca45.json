@@ -1,0 +1,65 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"demos/rlCollisionDemo/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "sg::@4fea3ea32cbcbacb426c"
+		}
+	],
+	"id" : "rlCollisionDemo_autogen::@044b1f47bc46cdbe6e1a",
+	"isGeneratorProvided" : true,
+	"name" : "rlCollisionDemo_autogen",
+	"paths" : 
+	{
+		"build" : "demos/rlCollisionDemo",
+		"source" : "demos/rlCollisionDemo"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlCollisionDemo/CMakeFiles/rlCollisionDemo_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlCollisionDemo/CMakeFiles/rlCollisionDemo_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/rl/hal/Com.h
+rl/hal/export.h
+-
+
+../src/rl/hal/Socket.h
+chrono
+-
+memory
+-
+string
+-
+vector
+-
+rl/math/Real.h
+-
+Com.h
+../src/rl/hal/Com.h
+
+../src/rl/math/Real.h
+
+/home/oxefit/GitRepos/rl/demos/rlSocketDemo/rlSocketDemoClient.cpp
+iostream
+-
+stdexcept
+-
+boost/lexical_cast.hpp
+-
+rl/hal/Socket.h
+-
+
+src/rl/hal/export.h
+

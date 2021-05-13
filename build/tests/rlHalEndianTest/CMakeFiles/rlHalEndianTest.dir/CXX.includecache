@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/rl/hal/Endian.h
+cstdint
+-
+rl/hal/export.h
+-
+
+/home/oxefit/GitRepos/rl/tests/rlHalEndianTest/rlHalEndianTest.cpp
+cassert
+-
+cmath
+-
+iomanip
+-
+iostream
+-
+rl/hal/Endian.h
+-
+
+src/rl/hal/export.h
+

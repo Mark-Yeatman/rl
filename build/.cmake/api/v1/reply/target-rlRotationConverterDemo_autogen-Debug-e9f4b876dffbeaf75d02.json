@@ -1,0 +1,65 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"demos/rlRotationConverterDemo/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "math::@b957f7ecbdd2a839a07b"
+		}
+	],
+	"id" : "rlRotationConverterDemo_autogen::@79336123e89759c807a0",
+	"isGeneratorProvided" : true,
+	"name" : "rlRotationConverterDemo_autogen",
+	"paths" : 
+	{
+		"build" : "demos/rlRotationConverterDemo",
+		"source" : "demos/rlRotationConverterDemo"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlRotationConverterDemo/CMakeFiles/rlRotationConverterDemo_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlRotationConverterDemo/CMakeFiles/rlRotationConverterDemo_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

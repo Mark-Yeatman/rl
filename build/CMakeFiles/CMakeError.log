@@ -1,0 +1,234 @@
+Determining if the LIBXML_THREAD_ENABLED exist failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0ac2b/fast && /usr/bin/make  -f CMakeFiles/cmTC_0ac2b.dir/build.make CMakeFiles/cmTC_0ac2b.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0ac2b.dir/CheckSymbolExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7  -I/usr/include/libxml2  -o CMakeFiles/cmTC_0ac2b.dir/CheckSymbolExists.c.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘LIBXML_THREAD_ENABLED’ undeclared (first use in this function); did you mean ‘LIBXML_TREE_ENABLED’?
+   return ((int*)(&LIBXML_THREAD_ENABLED))[argc];
+                   ^~~~~~~~~~~~~~~~~~~~~
+                   LIBXML_TREE_ENABLED
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_0ac2b.dir/build.make:84: recipe for target 'CMakeFiles/cmTC_0ac2b.dir/CheckSymbolExists.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_0ac2b.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_0ac2b/fast' failed
+make: *** [cmTC_0ac2b/fast] Error 2
+
+
+File /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <libxml/xmlversion.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef LIBXML_THREAD_ENABLED
+  return ((int*)(&LIBXML_THREAD_ENABLED))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C++ SOURCE FILE Test _BULLET_DOUBLE_PRECISION failed with the following compile output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_3bcfd/fast && /usr/bin/make  -f CMakeFiles/cmTC_3bcfd.dir/build.make CMakeFiles/cmTC_3bcfd.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3bcfd.dir/src.cxx.o
+/usr/bin/x86_64-linux-gnu-g++-7 -DBT_USE_DOUBLE_PRECISION -D_BULLET_DOUBLE_PRECISION -I/usr/include/bullet  -o CMakeFiles/cmTC_3bcfd.dir/src.cxx.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_3bcfd
+/usr/local/share/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3bcfd.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-g++-7 -rdynamic CMakeFiles/cmTC_3bcfd.dir/src.cxx.o -o cmTC_3bcfd  /usr/lib/x86_64-linux-gnu/libBulletCollision.so /usr/lib/x86_64-linux-gnu/libLinearMath.so 
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+
+
+...and run output:
+
+Return value: 1
+Source file was:
+
+		#include <btBulletCollisionCommon.h>
+		int main()
+		{
+			btVector3 boxHalfExtents(1, -2, 3);
+			btBoxShape box(boxHalfExtents);
+			btVector3 boxHalfExtentsWithMargin = box.getHalfExtentsWithMargin();
+			return !btFuzzyZero(boxHalfExtents.distance(boxHalfExtentsWithMargin));
+		}
+	
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4f084/fast && /usr/bin/make  -f CMakeFiles/cmTC_4f084.dir/build.make CMakeFiles/cmTC_4f084.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f084.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7 -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_4f084.dir/src.c.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_4f084
+/usr/local/share/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4f084.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7 -rdynamic CMakeFiles/cmTC_4f084.dir/src.c.o -o cmTC_4f084 
+CMakeFiles/cmTC_4f084.dir/src.c.o: In function `main':
+src.c:(.text+0x3e): undefined reference to `pthread_create'
+src.c:(.text+0x4a): undefined reference to `pthread_detach'
+src.c:(.text+0x56): undefined reference to `pthread_cancel'
+src.c:(.text+0x67): undefined reference to `pthread_join'
+src.c:(.text+0x7b): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_4f084.dir/build.make:105: recipe for target 'cmTC_4f084' failed
+make[1]: *** [cmTC_4f084] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_4f084/fast' failed
+make: *** [cmTC_4f084/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7ec34/fast && /usr/bin/make  -f CMakeFiles/cmTC_7ec34.dir/build.make CMakeFiles/cmTC_7ec34.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7ec34.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_7ec34.dir/CheckFunctionExists.c.o -c /usr/local/share/cmake/share/cmake-3.19/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7ec34
+/usr/local/share/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ec34.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_7ec34.dir/CheckFunctionExists.c.o -o cmTC_7ec34  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_7ec34.dir/build.make:105: recipe for target 'cmTC_7ec34' failed
+make[1]: *** [cmTC_7ec34] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_7ec34/fast' failed
+make: *** [cmTC_7ec34/fast] Error 2
+
+
+
+Determining if the Q_WS_WIN exist failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0f15f/fast && /usr/bin/make  -f CMakeFiles/cmTC_0f15f.dir/build.make CMakeFiles/cmTC_0f15f.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0f15f.dir/CheckSymbolExists.cxx.o
+/usr/bin/x86_64-linux-gnu-g++-7  -I/usr/include/qt4  -o CMakeFiles/cmTC_0f15f.dir/CheckSymbolExists.cxx.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_WIN’ was not declared in this scope
+   return ((int*)(&Q_WS_WIN))[argc];
+                   ^~~~~~~~
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: note: suggested alternative: ‘Q_WS_X11’
+   return ((int*)(&Q_WS_WIN))[argc];
+                   ^~~~~~~~
+                   Q_WS_X11
+CMakeFiles/cmTC_0f15f.dir/build.make:84: recipe for target 'CMakeFiles/cmTC_0f15f.dir/CheckSymbolExists.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_0f15f.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_0f15f/fast' failed
+make: *** [cmTC_0f15f/fast] Error 2
+
+
+File /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_WIN
+  return ((int*)(&Q_WS_WIN))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the Q_WS_QWS exist failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e0802/fast && /usr/bin/make  -f CMakeFiles/cmTC_e0802.dir/build.make CMakeFiles/cmTC_e0802.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e0802.dir/CheckSymbolExists.cxx.o
+/usr/bin/x86_64-linux-gnu-g++-7  -I/usr/include/qt4  -o CMakeFiles/cmTC_e0802.dir/CheckSymbolExists.cxx.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_QWS’ was not declared in this scope
+   return ((int*)(&Q_WS_QWS))[argc];
+                   ^~~~~~~~
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: note: suggested alternative: ‘Q_WS_X11’
+   return ((int*)(&Q_WS_QWS))[argc];
+                   ^~~~~~~~
+                   Q_WS_X11
+CMakeFiles/cmTC_e0802.dir/build.make:84: recipe for target 'CMakeFiles/cmTC_e0802.dir/CheckSymbolExists.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_e0802.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_e0802/fast' failed
+make: *** [cmTC_e0802/fast] Error 2
+
+
+File /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_QWS
+  return ((int*)(&Q_WS_QWS))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the Q_WS_MAC exist failed with the following output:
+Change Dir: /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4f95d/fast && /usr/bin/make  -f CMakeFiles/cmTC_4f95d.dir/build.make CMakeFiles/cmTC_4f95d.dir/build
+make[1]: Entering directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4f95d.dir/CheckSymbolExists.cxx.o
+/usr/bin/x86_64-linux-gnu-g++-7  -I/usr/include/qt4  -o CMakeFiles/cmTC_4f95d.dir/CheckSymbolExists.cxx.o -c /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_MAC’ was not declared in this scope
+   return ((int*)(&Q_WS_MAC))[argc];
+                   ^~~~~~~~
+/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: note: suggested alternative: ‘Q_WS_X11’
+   return ((int*)(&Q_WS_MAC))[argc];
+                   ^~~~~~~~
+                   Q_WS_X11
+CMakeFiles/cmTC_4f95d.dir/build.make:84: recipe for target 'CMakeFiles/cmTC_4f95d.dir/CheckSymbolExists.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_4f95d.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: Leaving directory '/home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp'
+Makefile:140: recipe for target 'cmTC_4f95d/fast' failed
+make: *** [cmTC_4f95d/fast] Error 2
+
+
+File /home/oxefit/GitRepos/rl/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_MAC
+  return ((int*)(&Q_WS_MAC))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

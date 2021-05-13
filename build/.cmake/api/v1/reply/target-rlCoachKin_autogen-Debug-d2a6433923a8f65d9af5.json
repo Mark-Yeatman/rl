@@ -1,0 +1,73 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"demos/rlCoachKin/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "math::@b957f7ecbdd2a839a07b"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "kin::@e931e16836f82079a0c7"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "sg::@4fea3ea32cbcbacb426c"
+		}
+	],
+	"id" : "rlCoachKin_autogen::@dca8ee88921a7e27c7e1",
+	"isGeneratorProvided" : true,
+	"name" : "rlCoachKin_autogen",
+	"paths" : 
+	{
+		"build" : "demos/rlCoachKin",
+		"source" : "demos/rlCoachKin"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlCoachKin/CMakeFiles/rlCoachKin_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/demos/rlCoachKin/CMakeFiles/rlCoachKin_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

@@ -1,0 +1,40 @@
+file(REMOVE_RECURSE
+  "../../../lib/librlmdl.pdb"
+  "../../../lib/librlmdl.so"
+  "../../../lib/librlmdl.so.0.7.0"
+  "CMakeFiles/mdl.dir/AnalyticalInverseKinematics.cpp.o"
+  "CMakeFiles/mdl.dir/Body.cpp.o"
+  "CMakeFiles/mdl.dir/Compound.cpp.o"
+  "CMakeFiles/mdl.dir/Cylindrical.cpp.o"
+  "CMakeFiles/mdl.dir/Dynamic.cpp.o"
+  "CMakeFiles/mdl.dir/Element.cpp.o"
+  "CMakeFiles/mdl.dir/EulerCauchyIntegrator.cpp.o"
+  "CMakeFiles/mdl.dir/Exception.cpp.o"
+  "CMakeFiles/mdl.dir/Factory.cpp.o"
+  "CMakeFiles/mdl.dir/Fixed.cpp.o"
+  "CMakeFiles/mdl.dir/Frame.cpp.o"
+  "CMakeFiles/mdl.dir/Helical.cpp.o"
+  "CMakeFiles/mdl.dir/Integrator.cpp.o"
+  "CMakeFiles/mdl.dir/InverseKinematics.cpp.o"
+  "CMakeFiles/mdl.dir/IterativeInverseKinematics.cpp.o"
+  "CMakeFiles/mdl.dir/JacobianInverseKinematics.cpp.o"
+  "CMakeFiles/mdl.dir/Joint.cpp.o"
+  "CMakeFiles/mdl.dir/Kinematic.cpp.o"
+  "CMakeFiles/mdl.dir/Metric.cpp.o"
+  "CMakeFiles/mdl.dir/Model.cpp.o"
+  "CMakeFiles/mdl.dir/NloptInverseKinematics.cpp.o"
+  "CMakeFiles/mdl.dir/Prismatic.cpp.o"
+  "CMakeFiles/mdl.dir/Revolute.cpp.o"
+  "CMakeFiles/mdl.dir/RungeKuttaNystromIntegrator.cpp.o"
+  "CMakeFiles/mdl.dir/SixDof.cpp.o"
+  "CMakeFiles/mdl.dir/Spherical.cpp.o"
+  "CMakeFiles/mdl.dir/Transform.cpp.o"
+  "CMakeFiles/mdl.dir/UrdfFactory.cpp.o"
+  "CMakeFiles/mdl.dir/World.cpp.o"
+  "CMakeFiles/mdl.dir/XmlFactory.cpp.o"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/mdl.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

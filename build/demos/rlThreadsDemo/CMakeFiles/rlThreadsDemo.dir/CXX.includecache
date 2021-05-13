@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/oxefit/GitRepos/rl/demos/rlThreadsDemo/rlThreadsDemo.cpp
+chrono
+-
+functional
+-
+iostream
+-
+random
+-
+thread
+-
+vector
+-
+
