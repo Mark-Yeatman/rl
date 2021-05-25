@@ -49,7 +49,13 @@ namespace rl
 		void
 		InverseKinematics::addGoal(const ::rl::math::Transform& x, const ::std::size_t& i)
 		{
-			this->addGoal(::std::make_pair(x, i));
+			this->addGoal(::std::make_tuple(x, i , 1.0));
+		}
+
+		void
+		InverseKinematics::addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, const float weight)
+		{
+			this->addGoal(::std::make_tuple(x, i, weight));
 		}
 		
 		void
