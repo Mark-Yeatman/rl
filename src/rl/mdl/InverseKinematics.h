@@ -40,7 +40,9 @@ namespace rl
 		class RL_MDL_EXPORT InverseKinematics
 		{
 		public:
-			typedef ::std::tuple<::rl::math::Transform, ::std::size_t, float > Goal;
+
+			// transform, leaf/frame index, weight, 'O' for operationl or 'F' for frames, mask for x,y,z,angles vector goals
+			typedef ::std::tuple<::rl::math::Transform, ::std::size_t, float, char, ::rl::math::Vector > Goal;
 			
 			InverseKinematics(Kinematic* kinematic);
 			
@@ -51,6 +53,10 @@ namespace rl
 			void addGoal(const ::rl::math::Transform& x, const ::std::size_t& i);
 
 			void addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
+
+			void addFrameGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
+
+			void addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
 			
 			void clearGoals();
 			

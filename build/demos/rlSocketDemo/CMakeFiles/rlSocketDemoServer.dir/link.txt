@@ -1,1 +1,0 @@
-/usr/bin/x86_64-linux-gnu-g++-7 -g -rdynamic CMakeFiles/rlSocketDemoServer.dir/rlSocketDemoServer.cpp.o -o ../../bin/rlSocketDemoServer  -Wl,-rpath,/home/oxefit/GitRepos/rl/build/lib ../../lib/librlhal.so.0.7.0 /usr/lib/libcomedi.so /usr/lib/x86_64-linux-gnu/libdc1394.so 

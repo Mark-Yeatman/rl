@@ -101,8 +101,8 @@ namespace rl
 					
 					for (::std::size_t i = 0; i < this->goals.size(); ++i)
 					{
-						::rl::math::VectorBlock dxi = dx.segment(6 * this->goals[i].second, 6);
-						dxi = this->kinematic->getOperationalPosition(this->goals[i].second).toDelta(this->goals[i].first);
+						::rl::math::VectorBlock dxi = dx.segment(6 * std::get<1>(this->goals[i]), 6);
+						dxi = this->kinematic->getOperationalPosition(std::get<1>(this->goals[i])).toDelta(std::get<0>(this->goals[i]));
 					}
 					
 					if (dx.squaredNorm() < ::std::pow(this->getEpsilon(), 2))
