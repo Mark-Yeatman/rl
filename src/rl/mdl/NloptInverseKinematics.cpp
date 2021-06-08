@@ -73,8 +73,8 @@ namespace rl
 			
 			for (::std::size_t i = 0; i < ik->goals.size(); ++i)
 			{
-				::rl::math::VectorBlock dxi = dx.segment(6 * ik->goals[i].second, 6);
-				dxi = ik->kinematic->getOperationalPosition(ik->goals[i].second).toDelta(ik->goals[i].first);
+				::rl::math::VectorBlock dxi = dx.segment(6 * std::get<1>(ik->goals[i]), 6);
+				dxi = ik->kinematic->getOperationalPosition(std::get<1>(ik->goals[i])).toDelta(std::get<0>(ik->goals[i]));
 			}
 			
 			if (nullptr != grad)
