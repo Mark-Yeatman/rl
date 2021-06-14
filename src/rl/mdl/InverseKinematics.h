@@ -57,6 +57,8 @@ namespace rl
 			void addFrameGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
 
 			void addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
+
+			void  addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight, ::rl::math::Vector mask);
 			
 			void clearGoals();
 			

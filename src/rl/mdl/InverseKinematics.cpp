@@ -76,6 +76,12 @@ namespace rl
 			mask[5] = 0.0;
 			this->addGoal(::std::make_tuple(x, i, weight, 'F', mask));
 		}
+
+		void
+		InverseKinematics::addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, const float weight, ::rl::math::Vector mask)
+		{
+			this->addGoal(::std::make_tuple(x, i, weight, 'F', mask));
+		}
 		
 		void
 		InverseKinematics::clearGoals()

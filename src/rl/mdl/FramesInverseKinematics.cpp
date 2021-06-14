@@ -69,19 +69,29 @@ namespace rl
 			ik->kinematic->setPosition(q);
 			ik->kinematic->forwardPosition();
 			
-			::rl::math::Vector dx = ::rl::math::Vector::Zero(6 * ik->kinematic->getOperationalDof());
+			::rl::math::Vector dx = ::rl::math::Vector::Zero(6 * ik->goals.size());
 			
 			for (::std::size_t i = 0; i < ik->goals.size(); ++i)
 			{
-				::rl::math::VectorBlock dxi = dx.segment(6 * std::get<1>(ik->goals[i]), 6);
-				dxi = ik->kinematic->getOperationalPosition(std::get<1>(ik->goals[i])).toDelta(std::get<0>(ik->goals[i]));
+				int index = std::get<1>(ik->goals[i]);
+				rl::math::Vector mask = std::get<4>(ik->goals[i]);
+				float weight = std::get<2>(ik->goals[i]);
+				::rl::math::VectorBlock dxi = dx.segment(6 * i, 6);
+				dxi = ik->kinematic->getFrame(index)->x.transform().toDelta(std::get<0>(ik->goals[i])).cwiseProduct(mask) * weight;
 			}
 			
 			if (nullptr != grad)
 			{
 				::Eigen::Map<::Eigen::VectorXd> grad2(grad, n, 1);
-				ik->kinematic->calculateJacobian();
-				grad2 = -2 * ik->kinematic->getJacobian().transpose() * dx;
+				Eigen::MatrixXd bigJ = Eigen::MatrixXd::Constant(6 * ik->goals.size(),n, 0.0);
+				for (::std::size_t i = 0; i < ik->goals.size(); ++i)
+				{
+					int index = std::get<1>(ik->goals[i]);
+					float weight = std::get<2>(ik->goals[i]);
+					grad2.block(6 * i, 0, 6, n) = weight * ik->kinematic->calculateFrameJacobian(index);
+				}
+		
+				grad2 = -2 * bigJ.transpose() * dx;
 			}
 			
 			return dx.squaredNorm();

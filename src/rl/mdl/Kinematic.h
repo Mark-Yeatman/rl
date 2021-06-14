@@ -76,6 +76,8 @@ namespace rl
 			 */
 			void calculateJacobian(::rl::math::Matrix& J, const bool& inWorldFrame = true);
 			
+			::rl::math::Matrix calculateFrameJacobian(int frameIndex,  const bool& inWorldFrame = true);
+
 			/**
 			 * Calculate Jacobian derivative vector.
 			 *

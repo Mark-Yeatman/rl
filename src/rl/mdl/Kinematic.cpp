@@ -104,6 +104,40 @@ namespace rl
 			}
 		}
 		
+
+		::rl::math::Matrix
+		Kinematic::calculateFrameJacobian(int frameIndex, const bool& inWorldFrame)
+		{
+			::rl::math::Matrix J = rl::math::Matrix::Ones(6, this->getDof())*0;
+			assert(J.rows() == 6);
+			assert(J.cols() == this->getDof());
+
+			::rl::math::Vector tmp(this->getDof());
+			
+			for (::std::size_t i = 0; i < this->getDof(); ++i)
+			{
+				for (::std::size_t j = 0; j < this->getDof(); ++j)
+				{
+					tmp(j) = i == j ? 1 : 0;
+				}
+				
+				this->setVelocity(tmp);
+				this->forwardVelocity();
+				if (inWorldFrame)
+				{
+					J.block(0, i, 3, 1) = this->getFrame(frameIndex)->x.linear() * this->getFrame(frameIndex)->v.linear();
+					J.block(3, i, 3, 1) = this->getFrame(frameIndex)->x.linear() * this->getFrame(frameIndex)->v.angular();
+				}
+				else
+				{
+					J.block(0, i, 3, 1) = this->getFrame(frameIndex)->v.linear();
+					J.block(3, i, 3, 1) = this->getFrame(frameIndex)->v.angular();
+				}
+				
+			}
+			return J;
+		}
+
 		void
 		Kinematic::calculateJacobianDerivative(const bool& inWorldFrame)
 		{
