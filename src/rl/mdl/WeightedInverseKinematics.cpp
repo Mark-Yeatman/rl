@@ -25,13 +25,13 @@
 //
 
 #include "Kinematic.h"
-#include "FramesInverseKinematics.h"
+#include "WeightedInverseKinematics.h"
 
 namespace rl
 {
 	namespace mdl
 	{
-		FramesInverseKinematics::FramesInverseKinematics(Kinematic* kinematic) :
+		WeightedInverseKinematics::WeightedInverseKinematics(Kinematic* kinematic) :
 			IterativeInverseKinematics(kinematic),
 			lb(this->kinematic->getMinimum()),
 			opt(::nlopt_create(::NLOPT_LD_SLSQP, kinematic->getDofPosition()), ::nlopt_destroy),
@@ -42,21 +42,21 @@ namespace rl
 			Exception::check(::nlopt_set_ftol_abs(opt.get(), ::std::numeric_limits<double>::epsilon()));
 			Exception::check(::nlopt_set_ftol_rel(opt.get(), ::std::numeric_limits<double>::epsilon()));
 			Exception::check(::nlopt_set_lower_bounds(opt.get(), this->lb.data()));
-			Exception::check(::nlopt_set_min_objective(opt.get(), &FramesInverseKinematics::f, this));
+			Exception::check(::nlopt_set_min_objective(opt.get(), &WeightedInverseKinematics::f, this));
 			Exception::check(::nlopt_set_stopval(opt.get(), ::std::pow(this->getEpsilon(), 2)));
 			Exception::check(::nlopt_set_upper_bounds(opt.get(), this->ub.data()));
 			Exception::check(::nlopt_set_xtol_abs1(opt.get(), ::std::numeric_limits<double>::epsilon()));
 			Exception::check(::nlopt_set_xtol_rel(opt.get(), ::std::numeric_limits<double>::epsilon()));
 		}
 		
-		FramesInverseKinematics::~FramesInverseKinematics()
+		WeightedInverseKinematics::~WeightedInverseKinematics()
 		{
 		}
 		
 		double
-		FramesInverseKinematics::f(unsigned int n, const double* x, double* grad, void* data)
+		WeightedInverseKinematics::f(unsigned int n, const double* x, double* grad, void* data)
 		{
-			FramesInverseKinematics* ik = static_cast<FramesInverseKinematics*>(data);
+			WeightedInverseKinematics* ik = static_cast<WeightedInverseKinematics*>(data);
 			++ik->iteration;
 			
 			::Eigen::Map<const ::Eigen::VectorXd> q(x, n, 1);
@@ -74,49 +74,42 @@ namespace rl
 			for (::std::size_t i = 0; i < ik->goals.size(); ++i)
 			{
 				int index = std::get<1>(ik->goals[i]);
-				rl::math::Vector mask = std::get<4>(ik->goals[i]);
+				rl::math::Vector mask = std::get<3>(ik->goals[i]);
 				float weight = std::get<2>(ik->goals[i]);
 				::rl::math::VectorBlock dxi = dx.segment(6 * i, 6);
-				dxi = ik->kinematic->getFrame(index)->x.transform().toDelta(std::get<0>(ik->goals[i])).cwiseProduct(mask) * weight;
+				dxi = ik->kinematic->getOperationalPosition(index).toDelta(std::get<0>(ik->goals[i])).cwiseProduct(mask) * weight;
 			}
 			
 			if (nullptr != grad)
 			{
 				::Eigen::Map<::Eigen::VectorXd> grad2(grad, n, 1);
-				Eigen::MatrixXd bigJ = Eigen::MatrixXd::Constant(6 * ik->goals.size(),n, 0.0);
-				for (::std::size_t i = 0; i < ik->goals.size(); ++i)
-				{
-					int index = std::get<1>(ik->goals[i]);
-					float weight = std::get<2>(ik->goals[i]);
-					grad2.block(6 * i, 0, 6, n) = weight * ik->kinematic->calculateFrameJacobian(index);
-				}
-		
-				grad2 = -2 * bigJ.transpose() * dx;
+				ik->kinematic->calculateJacobian();
+				grad2 = -2 * ik->kinematic->getJacobian().transpose() * dx;
 			}
 			
 			return dx.squaredNorm();
 		}
 		
 		::rl::math::Real
-		FramesInverseKinematics::getFunctionToleranceAbsolute() const
+		WeightedInverseKinematics::getFunctionToleranceAbsolute() const
 		{
 			return ::nlopt_get_ftol_abs(this->opt.get());
 		}
 		
 		::rl::math::Real
-		FramesInverseKinematics::getFunctionToleranceRelative() const
+		WeightedInverseKinematics::getFunctionToleranceRelative() const
 		{
 			return ::nlopt_get_ftol_rel(this->opt.get());
 		}
 		
 		const ::rl::math::Vector&
-		FramesInverseKinematics::getLowerBound() const
+		WeightedInverseKinematics::getLowerBound() const
 		{
 			return this->lb;
 		}
 		
 		::rl::math::Vector
-		FramesInverseKinematics::getOptimizationToleranceAbsolute() const
+		WeightedInverseKinematics::getOptimizationToleranceAbsolute() const
 		{
 			::rl::math::Vector tol(this->kinematic->getDofPosition());
 			Exception::check(::nlopt_get_xtol_abs(this->opt.get(), tol.data()));
@@ -124,76 +117,76 @@ namespace rl
 		}
 		
 		::rl::math::Real
-		FramesInverseKinematics::getOptimizationToleranceRelative() const
+		WeightedInverseKinematics::getOptimizationToleranceRelative() const
 		{
 			return ::nlopt_get_xtol_rel(this->opt.get());
 		}
 		
 		const ::rl::math::Vector&
-		FramesInverseKinematics::getUpperBound() const
+		WeightedInverseKinematics::getUpperBound() const
 		{
 			return this->ub;
 		}
 		
 		void
-		FramesInverseKinematics::seed(const ::std::mt19937::result_type& value)
+		WeightedInverseKinematics::seed(const ::std::mt19937::result_type& value)
 		{
 			this->randEngine.seed(value);
 		}
 		
 		void
-		FramesInverseKinematics::setEpsilon(const ::rl::math::Real& epsilon)
+		WeightedInverseKinematics::setEpsilon(const ::rl::math::Real& epsilon)
 		{
 			Exception::check(::nlopt_set_stopval(opt.get(), ::std::pow(epsilon, 2)));
 			IterativeInverseKinematics::setEpsilon(epsilon);
 		}
 		
 		void
-		FramesInverseKinematics::setFunctionToleranceAbsolute(const ::rl::math::Real& functionToleranceAbsolute)
+		WeightedInverseKinematics::setFunctionToleranceAbsolute(const ::rl::math::Real& functionToleranceAbsolute)
 		{
 			Exception::check(::nlopt_set_ftol_abs(opt.get(), functionToleranceAbsolute));
 		}
 		
 		void
-		FramesInverseKinematics::setFunctionToleranceRelative(const ::rl::math::Real& functionToleranceRelative)
+		WeightedInverseKinematics::setFunctionToleranceRelative(const ::rl::math::Real& functionToleranceRelative)
 		{
 			Exception::check(::nlopt_set_ftol_rel(opt.get(), functionToleranceRelative));
 		}
 		
 		void
-		FramesInverseKinematics::setLowerBound(const ::rl::math::Vector& lb)
+		WeightedInverseKinematics::setLowerBound(const ::rl::math::Vector& lb)
 		{
 			Exception::check(::nlopt_set_lower_bounds(opt.get(), lb.data()));
 			this->lb = lb;
 		}
 		
 		void
-		FramesInverseKinematics::setOptimizationToleranceAbsolute(const ::rl::math::Real& optimizationToleranceAbsolute)
+		WeightedInverseKinematics::setOptimizationToleranceAbsolute(const ::rl::math::Real& optimizationToleranceAbsolute)
 		{
 			Exception::check(::nlopt_set_xtol_abs1(opt.get(), optimizationToleranceAbsolute));
 		}
 		
 		void
-		FramesInverseKinematics::setOptimizationToleranceAbsolute(const ::rl::math::Vector& optimizationToleranceAbsolute)
+		WeightedInverseKinematics::setOptimizationToleranceAbsolute(const ::rl::math::Vector& optimizationToleranceAbsolute)
 		{
 			Exception::check(::nlopt_set_xtol_abs(opt.get(), optimizationToleranceAbsolute.data()));
 		}
 		
 		void
-		FramesInverseKinematics::setOptimizationToleranceRelative(const ::rl::math::Real& optimizationToleranceRelative)
+		WeightedInverseKinematics::setOptimizationToleranceRelative(const ::rl::math::Real& optimizationToleranceRelative)
 		{
 			Exception::check(::nlopt_set_xtol_rel(opt.get(), optimizationToleranceRelative));
 		}
 		
 		void
-		FramesInverseKinematics::setUpperBound(const ::rl::math::Vector& ub)
+		WeightedInverseKinematics::setUpperBound(const ::rl::math::Vector& ub)
 		{
 			Exception::check(::nlopt_set_upper_bounds(opt.get(), ub.data()));
 			this->ub = ub;
 		}
 		
 		bool
-		FramesInverseKinematics::solve()
+		WeightedInverseKinematics::solve()
 		{
 			::std::chrono::steady_clock::time_point start = ::std::chrono::steady_clock::now();
 			double remaining = ::std::chrono::duration<double>(this->getDuration()).count();
@@ -240,18 +233,18 @@ namespace rl
 			return false;
 		}
 		
-		FramesInverseKinematics::Exception::Exception(const ::nlopt_result& result) :
+		WeightedInverseKinematics::Exception::Exception(const ::nlopt_result& result) :
 			::rl::mdl::Exception(::std::string()),
 			result(result)
 		{
 		}
 		
-		FramesInverseKinematics::Exception::~Exception() throw()
+		WeightedInverseKinematics::Exception::~Exception() throw()
 		{
 		}
 		
 		void
-		FramesInverseKinematics::Exception::check(const ::nlopt_result& result)
+		WeightedInverseKinematics::Exception::check(const ::nlopt_result& result)
 		{
 			if (result < 0)
 			{
@@ -260,13 +253,13 @@ namespace rl
 		}
 		
 		::nlopt_result
-		FramesInverseKinematics::Exception::getResult() const
+		WeightedInverseKinematics::Exception::getResult() const
 		{
 			return this->result;
 		}
 		
 		const char*
-		FramesInverseKinematics::Exception::what() const throw()
+		WeightedInverseKinematics::Exception::what() const throw()
 		{
 			switch (this->result)
 			{

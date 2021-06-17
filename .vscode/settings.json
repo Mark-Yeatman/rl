@@ -66,6 +66,7 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "block": "cpp"
+        "block": "cpp",
+        "core": "cpp"
     }
 }

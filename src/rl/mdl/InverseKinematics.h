@@ -41,8 +41,8 @@ namespace rl
 		{
 		public:
 
-			// transform, leaf/frame index, weight, 'O' for operationl or 'F' for frames, mask for x,y,z,angles vector goals
-			typedef ::std::tuple<::rl::math::Transform, ::std::size_t, float, char, ::rl::math::Vector > Goal;
+			// transform, leaf/frame index, weight, mask for x,y,z, and angles vector goals
+			typedef ::std::tuple<::rl::math::Transform, ::std::size_t, float, ::rl::math::Vector > Goal;
 			
 			InverseKinematics(Kinematic* kinematic);
 			
@@ -54,11 +54,9 @@ namespace rl
 
 			void addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
 
-			void addFrameGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
+			void addTranslationGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
 
-			void addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight);
-
-			void  addFramePosGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight, ::rl::math::Vector mask);
+			void addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, float weight, ::rl::math::Vector mask);
 			
 			void clearGoals();
 			

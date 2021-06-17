@@ -37,7 +37,7 @@ namespace rl
 {
 	namespace mdl
 	{
-		class RL_MDL_EXPORT FramesInverseKinematics : public IterativeInverseKinematics
+		class RL_MDL_EXPORT WeightedInverseKinematics : public IterativeInverseKinematics
 		{
 		public:
 			class Exception : public ::rl::mdl::Exception
@@ -59,9 +59,9 @@ namespace rl
 				::nlopt_result result;
 			};
 			
-			FramesInverseKinematics(Kinematic* kinematic);
+			WeightedInverseKinematics(Kinematic* kinematic);
 			
-			virtual ~FramesInverseKinematics();
+			virtual ~WeightedInverseKinematics();
 			
 			::rl::math::Real getFunctionToleranceAbsolute() const;
 			

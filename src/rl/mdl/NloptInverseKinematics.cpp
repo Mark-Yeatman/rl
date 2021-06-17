@@ -1,3 +1,4 @@
+
 //
 // Copyright (c) 2009, Markus Rickert
 // All rights reserved.
@@ -228,6 +229,22 @@ namespace rl
 			while (remaining > 0 && this->iteration < this->getIterations());
 			
 			return false;
+		}
+
+		bool
+		NloptInverseKinematics::solve2()
+		{
+			::std::chrono::steady_clock::time_point start = ::std::chrono::steady_clock::now();
+			double remaining = ::std::chrono::duration<double>(this->getDuration()).count();
+			this->iteration = 0;
+			
+			::rl::math::Vector rand(this->kinematic->getDof());
+			::rl::math::Vector q = this->kinematic->getPosition();
+			double optF;
+			
+			::nlopt_result result = ::nlopt_optimize(opt.get(), q.data(), &optF);
+			
+			return true;
 		}
 		
 		NloptInverseKinematics::Exception::Exception(const ::nlopt_result& result) :

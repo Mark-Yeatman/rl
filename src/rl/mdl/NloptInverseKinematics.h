@@ -97,10 +97,9 @@ namespace rl
 			void setUpperBound(const ::rl::math::Vector& ub);
 			
 			bool solve();
+
+			bool solve2();
 			
-		protected:
-			
-		private:
 			static double f(unsigned int n, const double* x, double* grad, void* data);
 			
 			::std::size_t iteration;
