@@ -63,6 +63,7 @@ namespace rl
 			};
 			
 			NloptInverseKinematics(Kinematic* kinematic);
+			NloptInverseKinematics(Kinematic* kinematic, char flag);
 			
 			virtual ~NloptInverseKinematics();
 			
@@ -101,6 +102,8 @@ namespace rl
 			bool solve2();
 			
 			static double f(unsigned int n, const double* x, double* grad, void* data);
+
+			static double f2(unsigned int n, const double* x, double* grad, void* data);
 			
 			::std::size_t iteration;
 			
@@ -113,6 +116,10 @@ namespace rl
 			::std::mt19937 randEngine;
 			
 			::rl::math::Vector ub;
+
+			double f_avg_time_micros;
+			double grad_avg_time_micros;
+			double objective_avg_time_micros;
 		};
 	}
 }

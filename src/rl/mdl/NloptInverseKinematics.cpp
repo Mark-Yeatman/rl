@@ -27,6 +27,7 @@
 
 #include "Kinematic.h"
 #include "NloptInverseKinematics.h"
+using namespace std::chrono;
 
 namespace rl
 {
@@ -50,6 +51,24 @@ namespace rl
 			Exception::check(::nlopt_set_xtol_rel(opt.get(), ::std::numeric_limits<double>::epsilon()));
 		}
 		
+		NloptInverseKinematics::NloptInverseKinematics(Kinematic* kinematic, char flag) :
+			IterativeInverseKinematics(kinematic),
+			lb(this->kinematic->getMinimum()),
+			opt(::nlopt_create(::NLOPT_LD_SLSQP, kinematic->getDofPosition()), ::nlopt_destroy),
+			randDistribution(0, 1),
+			randEngine(::std::random_device()()),
+			ub(this->kinematic->getMaximum())
+		{
+			Exception::check(::nlopt_set_ftol_abs(opt.get(), ::std::numeric_limits<double>::epsilon()));
+			Exception::check(::nlopt_set_ftol_rel(opt.get(), ::std::numeric_limits<double>::epsilon()));
+			Exception::check(::nlopt_set_lower_bounds(opt.get(), this->lb.data()));
+			Exception::check(::nlopt_set_min_objective(opt.get(), &NloptInverseKinematics::f2, this));
+			Exception::check(::nlopt_set_stopval(opt.get(), ::std::pow(this->getEpsilon(), 2)));
+			Exception::check(::nlopt_set_upper_bounds(opt.get(), this->ub.data()));
+			Exception::check(::nlopt_set_xtol_abs1(opt.get(), ::std::numeric_limits<double>::epsilon()));
+			Exception::check(::nlopt_set_xtol_rel(opt.get(), ::std::numeric_limits<double>::epsilon()));
+		}
+
 		NloptInverseKinematics::~NloptInverseKinematics()
 		{
 		}
@@ -57,6 +76,8 @@ namespace rl
 		double
 		NloptInverseKinematics::f(unsigned int n, const double* x, double* grad, void* data)
 		{
+			auto start_total = high_resolution_clock::now();
+			
 			NloptInverseKinematics* ik = static_cast<NloptInverseKinematics*>(data);
 			++ik->iteration;
 			
@@ -77,14 +98,64 @@ namespace rl
 				::rl::math::VectorBlock dxi = dx.segment(6 * std::get<1>(ik->goals[i]), 6);
 				dxi = ik->kinematic->getOperationalPosition(std::get<1>(ik->goals[i])).toDelta(std::get<0>(ik->goals[i]));
 			}
-			
+			auto stop_objective = high_resolution_clock::now();
+			auto start_grad = high_resolution_clock::now();
 			if (nullptr != grad)
 			{
 				::Eigen::Map<::Eigen::VectorXd> grad2(grad, n, 1);
 				ik->kinematic->calculateJacobian();
 				grad2 = -2 * ik->kinematic->getJacobian().transpose() * dx;
 			}
+			auto stop_total = high_resolution_clock::now();
+			auto duration_total = duration_cast<microseconds>(stop_total - start_total);
+			auto grad_total = duration_cast<microseconds>(stop_total - start_grad);
+			auto objective_total = duration_cast<microseconds>(stop_objective - start_total);
+			ik->f_avg_time_micros = ik->f_avg_time_micros*(ik->iteration-1)/ik->iteration + duration_total.count()/ik->iteration;
+			ik->grad_avg_time_micros = ik->grad_avg_time_micros*(ik->iteration-1)/ik->iteration + grad_total.count()/ik->iteration;
+			ik->objective_avg_time_micros = ik->objective_avg_time_micros*(ik->iteration-1)/ik->iteration + objective_total.count()/ik->iteration;
+			return dx.squaredNorm();
+		}
+
+		double
+		NloptInverseKinematics::f2(unsigned int n, const double* x, double* grad, void* data)
+		{
+			auto start_total = high_resolution_clock::now();
 			
+			NloptInverseKinematics* ik = static_cast<NloptInverseKinematics*>(data);
+			++ik->iteration;
+			
+			::Eigen::Map<const ::Eigen::VectorXd> q(x, n, 1);
+			
+			if (!q.allFinite())
+			{
+				return ::std::numeric_limits<double>::infinity();
+			}
+			
+			ik->kinematic->setPosition(q);
+			ik->kinematic->forwardPosition();
+			
+			::rl::math::Vector dx = ::rl::math::Vector::Zero(3 * ik->kinematic->getOperationalDof());
+			
+			for (::std::size_t i = 0; i < ik->goals.size(); ++i)
+			{
+				::rl::math::VectorBlock dxi = dx.segment(3 * std::get<1>(ik->goals[i]), 3);
+				dxi = ik->kinematic->getOperationalPosition(std::get<1>(ik->goals[i])).toDelta(std::get<0>(ik->goals[i])).segment(0,3);
+			}
+			auto stop_objective = high_resolution_clock::now();
+			auto start_grad = high_resolution_clock::now();
+			if (nullptr != grad)
+			{
+				::Eigen::Map<::Eigen::VectorXd> grad2(grad, n, 1);
+				ik->kinematic->calculateLinearJacobian();
+				grad2 = -2 * ik->kinematic->getLinearJacobian().transpose() * dx;
+			}
+			auto stop_total = high_resolution_clock::now();
+			auto duration_total = duration_cast<microseconds>(stop_total - start_total);
+			auto grad_total = duration_cast<microseconds>(stop_total - start_grad);
+			auto objective_total = duration_cast<microseconds>(stop_objective - start_total);
+			ik->f_avg_time_micros = ik->f_avg_time_micros*(ik->iteration-1)/ik->iteration + duration_total.count()/ik->iteration;
+			ik->grad_avg_time_micros = ik->grad_avg_time_micros*(ik->iteration-1)/ik->iteration + grad_total.count()/ik->iteration;
+			ik->objective_avg_time_micros = ik->objective_avg_time_micros*(ik->iteration-1)/ik->iteration + objective_total.count()/ik->iteration;
 			return dx.squaredNorm();
 		}
 		
@@ -237,8 +308,7 @@ namespace rl
 			::std::chrono::steady_clock::time_point start = ::std::chrono::steady_clock::now();
 			double remaining = ::std::chrono::duration<double>(this->getDuration()).count();
 			this->iteration = 0;
-			
-			::rl::math::Vector rand(this->kinematic->getDof());
+
 			::rl::math::Vector q = this->kinematic->getPosition();
 			double optF;
 			

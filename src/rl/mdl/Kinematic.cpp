@@ -104,14 +104,18 @@ namespace rl
 			}
 		}
 		
-
-		::rl::math::Matrix
-		Kinematic::calculateFrameJacobian(int frameIndex, const bool& inWorldFrame)
+		void
+		Kinematic::calculateLinearJacobian(const bool& inWorldFrame)
 		{
-			::rl::math::Matrix J = rl::math::Matrix::Ones(6, this->getDof())*0;
-			assert(J.rows() == 6);
-			assert(J.cols() == this->getDof());
+			this->calculateLinearJacobian(this->JLinear, inWorldFrame);
+		}
 
+		void
+		Kinematic::calculateLinearJacobian(::rl::math::Matrix& J, const bool& inWorldFrame)
+		{
+			assert(J.rows() == this->getOperationalDof() * 3);
+			assert(J.cols() == this->getDof());
+			
 			::rl::math::Vector tmp(this->getDof());
 			
 			for (::std::size_t i = 0; i < this->getDof(); ++i)
@@ -123,19 +127,19 @@ namespace rl
 				
 				this->setVelocity(tmp);
 				this->forwardVelocity();
-				if (inWorldFrame)
-				{
-					J.block(0, i, 3, 1) = this->getFrame(frameIndex)->x.linear() * this->getFrame(frameIndex)->v.linear();
-					J.block(3, i, 3, 1) = this->getFrame(frameIndex)->x.linear() * this->getFrame(frameIndex)->v.angular();
-				}
-				else
-				{
-					J.block(0, i, 3, 1) = this->getFrame(frameIndex)->v.linear();
-					J.block(3, i, 3, 1) = this->getFrame(frameIndex)->v.angular();
-				}
 				
+				for (::std::size_t j = 0; j < this->getOperationalDof(); ++j)
+				{
+					if (inWorldFrame)
+					{
+						J.block(j * 3, i, 3, 1) = this->getOperationalPosition(j).linear() * this->getOperationalVelocity(j).linear();
+					}
+					else
+					{
+						J.block(j * 3, i, 3, 1) = this->getOperationalVelocity(j).linear();
+					}
+				}
 			}
-			return J;
 		}
 
 		void
@@ -248,6 +252,12 @@ namespace rl
 		{
 			return this->J;
 		}
+
+		const ::rl::math::Matrix&
+		Kinematic::getLinearJacobian() const
+		{
+			return this->JLinear;
+		}
 		
 		const ::rl::math::Vector&
 		Kinematic::getJacobianDerivative() const
@@ -281,6 +291,7 @@ namespace rl
 			
 			this->invJ = ::rl::math::Matrix::Identity(this->getDof(), 6 * this->getOperationalDof());
 			this->J = ::rl::math::Matrix::Identity(6 * this->getOperationalDof(), this->getDof());
+			this->JLinear = ::rl::math::Matrix::Identity(3 * this->getOperationalDof(), this->getDof());
 			this->Jdqd = ::rl::math::Vector::Zero(6 * this->getOperationalDof());
 		}
 	}

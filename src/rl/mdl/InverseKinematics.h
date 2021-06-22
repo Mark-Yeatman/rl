@@ -64,7 +64,6 @@ namespace rl
 			
 			virtual bool solve() = 0;
 			
-		protected:
 			::std::vector<Goal> goals;
 			
 			Kinematic* kinematic;
