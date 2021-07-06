@@ -49,7 +49,31 @@ namespace rl
 		void
 		InverseKinematics::addGoal(const ::rl::math::Transform& x, const ::std::size_t& i)
 		{
-			this->addGoal(::std::make_pair(x, i));
+			::rl::math::Vector mask = ::rl::math::Vector::Ones(6);
+			this->addGoal(::std::make_tuple(x, i , 1.0, mask));
+		}
+
+		void
+		InverseKinematics::addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, const float weight)
+		{
+			::rl::math::Vector mask = ::rl::math::Vector::Ones(6);
+			this->addGoal(::std::make_tuple(x, i, weight, mask));
+		}
+
+		void
+		InverseKinematics::addTranslationGoal(const ::rl::math::Transform& x, const ::std::size_t& i, const float weight)
+		{
+			::rl::math::Vector mask = ::rl::math::Vector::Ones(6);
+			mask[3] = 0.0;
+			mask[4] = 0.0;
+			mask[5] = 0.0;
+			this->addGoal(::std::make_tuple(x, i, weight, mask));
+		}
+
+		void
+		InverseKinematics::addGoal(const ::rl::math::Transform& x, const ::std::size_t& i, const float weight, ::rl::math::Vector mask)
+		{
+			this->addGoal(::std::make_tuple(x, i, weight, mask));
 		}
 		
 		void

@@ -24,9 +24,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef RL_MDL_NLOPTINVERSEKINEMATICS_H
-#define RL_MDL_NLOPTINVERSEKINEMATICS_H
-
 #include <chrono>
 #include <memory>
 #include <nlopt.h>
@@ -40,7 +37,7 @@ namespace rl
 {
 	namespace mdl
 	{
-		class RL_MDL_EXPORT NloptInverseKinematics : public IterativeInverseKinematics
+		class RL_MDL_EXPORT WeightedInverseKinematics : public IterativeInverseKinematics
 		{
 		public:
 			class Exception : public ::rl::mdl::Exception
@@ -62,10 +59,9 @@ namespace rl
 				::nlopt_result result;
 			};
 			
-			NloptInverseKinematics(Kinematic* kinematic);
-			NloptInverseKinematics(Kinematic* kinematic, char flag);
+			WeightedInverseKinematics(Kinematic* kinematic);
 			
-			virtual ~NloptInverseKinematics();
+			virtual ~WeightedInverseKinematics();
 			
 			::rl::math::Real getFunctionToleranceAbsolute() const;
 			
@@ -98,12 +94,11 @@ namespace rl
 			void setUpperBound(const ::rl::math::Vector& ub);
 			
 			bool solve();
-
-			bool solve2();
 			
+		protected:
+			
+		private:
 			static double f(unsigned int n, const double* x, double* grad, void* data);
-
-			static double f2(unsigned int n, const double* x, double* grad, void* data);
 			
 			::std::size_t iteration;
 			
@@ -116,12 +111,7 @@ namespace rl
 			::std::mt19937 randEngine;
 			
 			::rl::math::Vector ub;
-
-			double f_avg_time_micros;
-			double grad_avg_time_micros;
-			double objective_avg_time_micros;
 		};
 	}
 }
 
-#endif // RL_MDL_NLOPTINVERSEKINEMATICS_H

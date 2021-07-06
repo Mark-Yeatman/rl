@@ -105,6 +105,44 @@ namespace rl
 		}
 		
 		void
+		Kinematic::calculateLinearJacobian(const bool& inWorldFrame)
+		{
+			this->calculateLinearJacobian(this->JLinear, inWorldFrame);
+		}
+
+		void
+		Kinematic::calculateLinearJacobian(::rl::math::Matrix& J, const bool& inWorldFrame)
+		{
+			assert(J.rows() == this->getOperationalDof() * 3);
+			assert(J.cols() == this->getDof());
+			
+			::rl::math::Vector tmp(this->getDof());
+			
+			for (::std::size_t i = 0; i < this->getDof(); ++i)
+			{
+				for (::std::size_t j = 0; j < this->getDof(); ++j)
+				{
+					tmp(j) = i == j ? 1 : 0;
+				}
+				
+				this->setVelocity(tmp);
+				this->forwardVelocity();
+				
+				for (::std::size_t j = 0; j < this->getOperationalDof(); ++j)
+				{
+					if (inWorldFrame)
+					{
+						J.block(j * 3, i, 3, 1) = this->getOperationalPosition(j).linear() * this->getOperationalVelocity(j).linear();
+					}
+					else
+					{
+						J.block(j * 3, i, 3, 1) = this->getOperationalVelocity(j).linear();
+					}
+				}
+			}
+		}
+
+		void
 		Kinematic::calculateJacobianDerivative(const bool& inWorldFrame)
 		{
 			this->calculateJacobianDerivative(this->Jdqd, inWorldFrame);
@@ -214,6 +252,12 @@ namespace rl
 		{
 			return this->J;
 		}
+
+		const ::rl::math::Matrix&
+		Kinematic::getLinearJacobian() const
+		{
+			return this->JLinear;
+		}
 		
 		const ::rl::math::Vector&
 		Kinematic::getJacobianDerivative() const
@@ -247,6 +291,7 @@ namespace rl
 			
 			this->invJ = ::rl::math::Matrix::Identity(this->getDof(), 6 * this->getOperationalDof());
 			this->J = ::rl::math::Matrix::Identity(6 * this->getOperationalDof(), this->getDof());
+			this->JLinear = ::rl::math::Matrix::Identity(3 * this->getOperationalDof(), this->getDof());
 			this->Jdqd = ::rl::math::Vector::Zero(6 * this->getOperationalDof());
 		}
 	}

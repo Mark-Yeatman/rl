@@ -16,6 +16,7 @@ set(
 	Factory.h
 	Fixed.h
 	Frame.h
+	WeightedInverseKinematics.h
 	Helical.h
 	Integrator.h
 	InverseKinematics.h
@@ -49,6 +50,7 @@ set(
 	Fixed.cpp
 	Factory.cpp
 	Frame.cpp
+	WeightedInverseKinematics.cpp
 	Helical.cpp
 	Integrator.cpp
 	InverseKinematics.cpp

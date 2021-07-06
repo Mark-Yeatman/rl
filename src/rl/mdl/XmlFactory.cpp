@@ -431,7 +431,8 @@ namespace rl
 				{
 					if (home.size() != model->getDofPosition())
 					{
-						throw Exception("rl::mdl::XmlFactory::load() - Incorrect size of home position vector in file '" + filename + "'");
+						throw Exception( std::string("rl::mdl::XmlFactory::load() - Incorrect size of home position vector in file '" + filename 
+							+ "'. Model has %d DOF, home has %d coords.", home.size(), model->getDofPosition()) );
 					}
 					
 					::rl::math::Vector q(home.size());
