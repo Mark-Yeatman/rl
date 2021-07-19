@@ -1,3 +1,5 @@
+This is a fork of the robotics library. 
+
 # Robotics Library
 
 The [Robotics Library](https://www.roboticslibrary.org/) (RL) is a self-contained C++ library for rigid body kinematics and dynamics, motion planning, and control. It covers spatial vector algebra, multibody systems, hardware abstraction, path planning, collision detection, and visualization. It is being used in research projects and in education, available under a BSD license, and free for use in commercial applications. RL runs on many different systems, including Linux, macOS, and Windows. It uses CMake as a build system and can be compiled with Clang, GCC, and Visual Studio.
