@@ -41,11 +41,14 @@ namespace rl
 		class LowPass
 		{
 		public:
-			LowPass(const Real& alpha, const Real& dt, const Real& rc, const T& y = T()) :
+			LowPass<T>(const Real& alpha, const Real& dt, const Real& rc, const T& y = T()) :
 				alpha(alpha),
 				dt(dt),
 				rc(rc),
 				y(y)
+			{
+			}
+			LowPass<T>()
 			{
 			}
 			
